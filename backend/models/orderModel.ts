@@ -1,9 +1,47 @@
-import mongoose from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
 
-const orderSchema = new mongoose.Schema(
+interface OrderItem {
+  name: string;
+  qty: number;
+  image: string;
+  price: number;
+  product: Types.ObjectId;
+}
+
+interface ShippingAddress {
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}
+
+interface PaymentStatus {
+  id?: string;
+  status?: string;
+  update_time?: string;
+  email_address?: string;
+}
+
+interface OrderSchemaProps extends Document {
+  user: Types.ObjectId;
+  orderItems: OrderItem[];
+  shippingAddress: ShippingAddress;
+  paymentMethod: string;
+  paymentStatus?: PaymentStatus;
+  itemsPrice: number;
+  taxPrice: number;
+  shippingPrice: number;
+  totalPrice: number;
+  isPaid: boolean;
+  paidAt?: Date;
+  isDelivered: boolean;
+  deliveredAt?: Date;
+}
+
+const orderSchema = new Schema<OrderSchemaProps>(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
@@ -14,7 +52,7 @@ const orderSchema = new mongoose.Schema(
         image: { type: String, required: true },
         price: { type: Number, required: true },
         product: {
-          type: mongoose.Schema.Types.ObjectId,
+          type: Schema.Types.ObjectId,
           required: true,
           ref: "Product",
         },
@@ -76,6 +114,6 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Order = mongoose.model("Order", orderSchema);
+const Order = model<OrderSchemaProps>("Order", orderSchema);
 
 export default Order;
