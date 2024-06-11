@@ -6,7 +6,12 @@ import Product from "../models/productModel";
 // @access Public
 export const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
-  res.json(products);
+  if (products.length > 0) {
+    res.json(products);
+  } else {
+    res.status(404);
+    throw new Error("Resource not found");
+  }
 });
 
 // @desc Fetch a product
@@ -14,7 +19,6 @@ export const getProducts = asyncHandler(async (req, res) => {
 // @access Public
 export const getProductById = asyncHandler(async (req, res): Promise<void> => {
   const product = await Product.findById(req.params.id);
-  console.log(" product ", product);
   if (product) {
     res.json(product);
   } else {
