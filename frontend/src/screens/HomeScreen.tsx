@@ -3,6 +3,8 @@ import Product from "../components/Product";
 import { ProductPropsV1 } from "../types";
 
 import { useGetProductsQuery } from "../slices/productApiSlice";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const HomeScreen = () => {
   const { data: products, isLoading, error } = useGetProductsQuery("Product");
@@ -10,9 +12,9 @@ const HomeScreen = () => {
   return (
     <>
       {isLoading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : error ? (
-        <div>Something went wrong</div>
+        <Message variant="danger">Something went wrong </Message>
       ) : (
         <>
           <h1>Latest Products</h1>
