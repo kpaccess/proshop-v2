@@ -13,23 +13,32 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
+      console.log(" state ", state);
       const item = action.payload;
 
-      const existItem = state.cartItems.find((x) => x._id === item._id);
+      console.log(" item ", item);
+
+      const existItem = state.cartItems.find(
+        (x: { _id: string }) => x._id === item._id
+      );
+
+      console.log(" existItem ", existItem);
 
       if (existItem) {
-        state.cartItems = state.cartItems.map((x) =>
+        state.cartItems = state?.cartItems.map((x: { _id: string }) =>
           x._id === existItem._id ? item : x
         );
       } else {
         state.cartItems = [...state.cartItems, item];
       }
 
+      console.log(" items price ", state.itemsPrice);
+
       // Calculate items price
       state.itemsPrice = addDecimals(
-        state.cartItem.reduce(
+        state?.cartItem?.reduce(
           (acc: number, item: { price: number; qty: number }) =>
-            acc + item.price * item.qty,
+            acc + item?.price * item?.qty,
           0
         )
       );
