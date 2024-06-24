@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import connectDB from "./config/db";
 import productRoutes from "./routes/productRoutes";
+import userRoutes from "./routes/userRoutes";
 
 import { notFound, errorHandler } from "./middleware/errorMiddleware";
-
 connectDB();
 const app = express();
 
@@ -16,5 +16,7 @@ app.listen(port, () => {
 });
 
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
+
 app.use(notFound);
 app.use(errorHandler);
